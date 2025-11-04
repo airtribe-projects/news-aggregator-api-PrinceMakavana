@@ -10,7 +10,8 @@ const registerUser = async (user) => {
     if (!user.name || !user.email || !user.password) {
         throw new Error("Name, Email and Password are required");
     }
-    user.password = bcrypt.hashSync(user.password, 10);
+    const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS) || 10;
+    user.password = bcrypt.hashSync(user.password,  SALT_ROUNDS);
 
     const dbUser = await usersModel.create(user);
     dbUser.password = "";
@@ -26,7 +27,7 @@ const loginUser = async (email, password) => {
 
 
     if (!isSamePassword) {
-        throw new Error("Invalid Password");
+         throw new Error("Invalid Password");
     }
     
     return dbUser;
@@ -38,7 +39,4 @@ const getUserById = async (id) => {
     }
     return dbUser;
 }
-
-
-
 module.exports = {registerUser , loginUser , getUserById};

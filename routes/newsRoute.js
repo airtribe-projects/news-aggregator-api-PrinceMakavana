@@ -24,7 +24,6 @@ router.get('/', async (req, res) => {
         const dbUser = await usersController.getUserById(decoded.id);
         const newsArticles = await newsController.getNewsByPreferences(dbUser.preferences);
         res.status(200).json({news: newsArticles});
-        // News Fetching Logic to be implemented here
     } catch (error) {
           console.log(error);
             res.status(500).json({message: 'Error fetching news'});
